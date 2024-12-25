@@ -1,10 +1,10 @@
 [project]
 name = "funai"
-version = "1.0.2"
+version = "1.0.3"
 description = "funai"
 readme = "README.md"
 requires-python = ">=3.8"
-dependencies = []
+dependencies = [ "funsecret>=1.4.38", "funutil>=1.0.46",]
 [[project.authors]]
 name = "niuliangtao"
 email = "farfarfun@qq.com"
