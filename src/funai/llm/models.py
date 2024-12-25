@@ -1,4 +1,4 @@
-from funsecret.secret import read_cache_secret
+from funsecret.secret import read_secret
 from funutil import getLogger
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
@@ -52,7 +52,7 @@ class Moonshot(BaseModel):
         *args,
         **kwargs,
     ):
-        api_key = api_key or read_cache_secret("funai", "moonshot", "api_key")
+        api_key = api_key or read_secret("funai", "moonshot", "api_key")
         return super().instance(
             api_key=api_key, model_name=model_name, base_url=base_url, *args, **kwargs
         )
@@ -72,7 +72,7 @@ class Deepseek(BaseModel):
         *args,
         **kwargs,
     ):
-        api_key = api_key or read_cache_secret("funai", "deepseek", "api_key")
+        api_key = api_key or read_secret("funai", "deepseek", "api_key")
         return super().instance(
             api_key=api_key, model_name=model_name, base_url=base_url, *args, **kwargs
         )
