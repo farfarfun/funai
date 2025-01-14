@@ -1,4 +1,4 @@
-from funsecret.secret import read_secret
+from funsecret.secret import read_cache_secret
 from funutil import getLogger
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
@@ -6,20 +6,16 @@ from openai.types.chat import ChatCompletion
 logger = getLogger("funai")
 
 
-class BaseModel:
+class BaseModel(OpenAI):
     llm_provider = "openai"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, api_key, model_name, *args, **kwargs):
+        super().__init__(api_key=api_key, *args, **kwargs)
         self.client = None
-        self.model_name = None
-
-    def instance(self, api_key, model_name, base_url, *args, **kwargs):
         self.model_name = model_name
-        self.client = OpenAI(api_key=api_key, base_url=base_url)
-        return self
 
     def chat(self, prompt):
-        response = self.client.chat.completions.create(
+        response = super().chat.completions.create(
             model=self.model_name, messages=[{"role": "user", "content": prompt}]
         )
         content = ""
@@ -41,10 +37,7 @@ class BaseModel:
 class Moonshot(BaseModel):
     llm_provider = "moonshot"
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def instance(
+    def __init__(
         self,
         api_key=None,
         model_name="moonshot-v1-8k",
@@ -52,8 +45,8 @@ class Moonshot(BaseModel):
         *args,
         **kwargs,
     ):
-        api_key = api_key or read_secret("funai", "moonshot", "api_key")
-        return super().instance(
+        api_key = api_key or read_cache_secret("funai", "moonshot", "api_key")
+        super().__init__(
             api_key=api_key, model_name=model_name, base_url=base_url, *args, **kwargs
         )
 
@@ -61,10 +54,7 @@ class Moonshot(BaseModel):
 class Deepseek(BaseModel):
     llm_provider = "deepseek"
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def instance(
+    def __init__(
         self,
         api_key=None,
         model_name="deepseek-chat",
@@ -72,16 +62,16 @@ class Deepseek(BaseModel):
         *args,
         **kwargs,
     ):
-        api_key = api_key or read_secret("funai", "deepseek", "api_key")
-        return super().instance(
+        api_key = api_key or read_cache_secret("funai", "deepseek", "api_key")
+        super().__init__(
             api_key=api_key, model_name=model_name, base_url=base_url, *args, **kwargs
         )
 
 
 def get_model(provider, api_key=None):
     if provider == "moonshot":
-        return Moonshot().instance(api_key=api_key)
+        return Moonshot(api_key=api_key)
     elif provider == "deepseek":
-        return Deepseek().instance(api_key=api_key)
+        return Deepseek(api_key=api_key)
     else:
         logger.error(f'unsupported provider: "{provider}"')
