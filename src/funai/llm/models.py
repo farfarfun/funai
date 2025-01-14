@@ -68,7 +68,7 @@ class Deepseek(BaseModel):
         )
 
 
-def get_model(provider, api_key=None):
+def get_model(provider, api_key=None) -> OpenAI:
     if provider == "moonshot":
         return Moonshot(api_key=api_key)
     elif provider == "deepseek":
