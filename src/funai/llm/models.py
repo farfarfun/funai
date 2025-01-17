@@ -9,14 +9,16 @@ logger = getLogger("funai")
 class BaseModel(OpenAI):
     llm_provider = "openai"
 
-    def __init__(self, api_key, model_name, *args, **kwargs):
+    def __init__(self, api_key: str, model_name: str, *args, **kwargs):
         super().__init__(api_key=api_key, *args, **kwargs)
-        self.client = None
-        self.model_name = model_name
+        self.model_name: str = model_name
 
-    def chat(self, prompt):
+    def fun_chat(self, prompt, messages=None, *args, **kwargs):
         response = super().chat.completions.create(
-            model=self.model_name, messages=[{"role": "user", "content": prompt}]
+            model=self.model_name,
+            messages=messages or [{"role": "user", "content": prompt}],
+            *args,
+            **kwargs,
         )
         content = ""
         if response:
