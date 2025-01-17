@@ -14,7 +14,7 @@ class BaseModel(OpenAI):
         self.model_name: str = model_name
 
     def fun_chat(self, prompt, messages=None, *args, **kwargs):
-        response = super().chat.completions.create(
+        response = self.chat.completions.create(
             model=self.model_name,
             messages=messages or [{"role": "user", "content": prompt}],
             *args,
