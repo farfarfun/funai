@@ -1,4 +1,4 @@
-from nltsecret.secret import read_cache_secret
+from funsecret.secret import read_cache_secret
 from funutil import getLogger
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
