@@ -3,8 +3,8 @@ name = "funai"
 version = "1.0.7"
 description = "funai"
 readme = "README.md"
-requires-python = ">=3.8"
-dependencies = [ "funsecret>=1.4.38", "funutil>=1.0.46",]
+requires-python = ">=3.10"
+dependencies = [ "nltsecret>=1.4.83", "funutil>=1.0.46",]
 [[project.authors]]
 name = "niuliangtao"
 email = "farfarfun@qq.com"
