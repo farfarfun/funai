@@ -11,3 +11,6 @@ email = "farfarfun@qq.com"
 
 [tool.setuptools]
 license-files = []
+
+[dependency-groups]
+dev = [ "pytest>=7.0.0",]
