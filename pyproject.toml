@@ -1,6 +1,6 @@
 [project]
 name = "funai"
-version = "1.0.9"
+version = "1.0.10"
 description = "funai"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -11,6 +11,10 @@ email = "farfarfun@qq.com"
 
 [tool.setuptools]
 license-files = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [ "pytest>=7.0.0",]
