@@ -1,4 +1,3 @@
-from .models import get_model, Moonshot, Deepseek
+from .models import Deepseek, Moonshot, UnsupportedProviderError, get_model
 
-
-__all__ = ["get_model", "Deepseek", "Moonshot"]
+__all__ = ["get_model", "Deepseek", "Moonshot", "UnsupportedProviderError"]

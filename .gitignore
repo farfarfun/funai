@@ -60,6 +60,12 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+*.db
+
+# farfarfun 组织约定 (SPEC §10/§16)
+.run/
+logs/
+node_modules/
 
 # Flask stuff:
 instance/

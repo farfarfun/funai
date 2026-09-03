@@ -347,7 +347,7 @@ name = "exceptiongroup"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "(python_full_version < '3.13' and sys_platform != 'emscripten') or (python_full_version < '3.12' and sys_platform == 'emscripten')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/50/79/66800aadf48771f6b62f7eb014e352e5d06856655206165d775e675a02c9/exceptiongroup-1.3.1.tar.gz", hash = "sha256:8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219", size = 30371, upload-time = "2025-11-21T23:01:54.787Z" }
 wheels = [
@@ -379,11 +379,11 @@ wheels = [
 
 [[package]]
 name = "funai"
-version = "1.0.10"
+version = "1.0.11"
 source = { editable = "." }
 dependencies = [
+    { name = "farlog" },
     { name = "funsecret" },
-    { name = "funutil" },
     { name = "openai" },
 ]
 
@@ -394,8 +394,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "farlog", specifier = ">=1.1.7" },
     { name = "funsecret", specifier = ">=1.4.84" },
-    { name = "funutil", specifier = ">=1.0.62" },
     { name = "openai", specifier = ">=1.0.0" },
 ]
 
@@ -417,17 +417,6 @@ dependencies = [
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cf/cf/b8bbd2c8f657043470d65aa6dc7dd635518cc1d5a4f552b1ff0dcfb941b5/funsecret-1.4.93-py3-none-any.whl", hash = "sha256:2d832f5647623a3d07595b4b28c023bbe942535ce4407591ca1cb7531aa20fef", size = 12240, upload-time = "2026-08-27T02:54:15.131Z" },
-]
-
-[[package]]
-name = "funutil"
-version = "1.0.63"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "nltlog" },
-]
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/de/ff/679f950dd5cea961b33c3ff5ecec1ddb425ddc5e0eb99247e48c53a27118/funutil-1.0.63-py3-none-any.whl", hash = "sha256:443d358b9373fb164312df7440c6fab882f39fe0c07c0e06584655fa06e9e5f0", size = 21935, upload-time = "2026-08-26T15:54:14.788Z" },
 ]
 
 [[package]]
@@ -673,17 +662,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729, upload-time = "2022-08-14T12:40:10.846Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979, upload-time = "2022-08-14T12:40:09.779Z" },
-]
-
-[[package]]
-name = "nltlog"
-version = "1.1.6"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "loguru" },
-]
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/fb/5a/03c191b427546e1743dfaad81e36569d8bdf4ecf0de39fe12eb8d684091f/nltlog-1.1.6-py3-none-any.whl", hash = "sha256:3d69b26847f88ebf188c71d797fd73a60d249d3224f8b6731fec64e642d3459f", size = 5056, upload-time = "2026-08-03T02:43:02.75Z" },
 ]
 
 [[package]]

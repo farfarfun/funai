@@ -31,3 +31,18 @@ answer = model.fun_chat("讲个笑话")
 - `Deepseek`：默认 `model_name="deepseek-chat"`，`base_url="https://api.deepseek.com"`
 
 两者都继承自 `funai.llm.models.BaseModel`（本质是 `openai.OpenAI` 客户端的子类）。`fun_chat()` 是对 `chat.completions.create` 的简单封装：传入 prompt（或自定义 `messages`），直接返回模型回复的文本内容。
+
+传入不支持的 provider 时，`get_model()` 会抛出 `funai.llm.UnsupportedProviderError`。
+
+---
+
+## 关于 farfarfun
+
+[farfarfun](https://github.com/farfarfun) 是一个专注于实用工具库的开源组织，
+涵盖云存储、数据处理、AI、多媒体与开发工具链等方向。
+
+- 🏠 组织主页：<https://github.com/farfarfun>
+- 📦 PyPI：<https://pypi.org/user/niuliangtao/>
+- 📧 联系：farfarfun@qq.com
+
+本项目基于 [MIT](LICENSE) 协议开源。

@@ -1,16 +1,15 @@
 [project]
 name = "funai"
-version = "1.0.10"
+version = "1.0.11"
 description = "funai"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [ "funsecret>=1.4.84", "funutil>=1.0.62", "openai>=1.0.0",]
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [ "funsecret>=1.4.84", "farlog>=1.1.7", "openai>=1.0.0",]
 [[project.authors]]
 name = "niuliangtao"
 email = "farfarfun@qq.com"
-
-[tool.setuptools]
-license-files = []
 
 [build-system]
 requires = ["hatchling"]
