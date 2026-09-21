@@ -1,3 +1,5 @@
+from typing import Any
+
 from farlog import getLogger
 from funsecret.secret import read_cache_secret
 from openai import OpenAI
@@ -25,7 +27,13 @@ class BaseModel(OpenAI):
 
     llm_provider: str = "openai"
 
-    def __init__(self, api_key: str, model_name: str, *args, **kwargs):
+    def __init__(
+        self,
+        api_key: str,
+        model_name: str,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """初始化模型客户端。
 
         Args:
@@ -34,15 +42,15 @@ class BaseModel(OpenAI):
             *args: 透传给 `openai.OpenAI` 的位置参数。
             **kwargs: 透传给 `openai.OpenAI` 的关键字参数（如 `base_url`）。
         """
-        super().__init__(api_key=api_key, *args, **kwargs)
+        super().__init__(*args, api_key=api_key, **kwargs)
         self.model_name: str = model_name
 
     def fun_chat(
         self,
         prompt: str,
         messages: list[dict[str, str]] | None = None,
-        *args,
-        **kwargs,
+        *args: Any,
+        **kwargs: Any,
     ) -> str:
         """发起一次对话补全，返回模型回复的纯文本内容。
 
@@ -57,9 +65,9 @@ class BaseModel(OpenAI):
             模型回复文本（已去除换行符）；请求返回空响应或非预期类型时返回空字符串。
         """
         response = self.chat.completions.create(
+            *args,
             model=self.model_name,
             messages=messages or [{"role": "user", "content": prompt}],
-            *args,
             **kwargs,
         )
         content = ""
@@ -88,9 +96,9 @@ class Moonshot(BaseModel):
         api_key: str | None = None,
         model_name: str = "moonshot-v1-8k",
         base_url: str = "https://api.moonshot.cn/v1",
-        *args,
-        **kwargs,
-    ):
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """初始化 Moonshot 客户端。
 
         Args:
@@ -101,7 +109,7 @@ class Moonshot(BaseModel):
         """
         api_key = api_key or read_cache_secret("funai", "moonshot", "api_key")
         super().__init__(
-            api_key=api_key, model_name=model_name, base_url=base_url, *args, **kwargs
+            *args, api_key=api_key, model_name=model_name, base_url=base_url, **kwargs
         )
 
 
@@ -115,9 +123,9 @@ class Deepseek(BaseModel):
         api_key: str | None = None,
         model_name: str = "deepseek-chat",
         base_url: str = "https://api.deepseek.com",
-        *args,
-        **kwargs,
-    ):
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """初始化 DeepSeek 客户端。
 
         Args:
@@ -128,7 +136,7 @@ class Deepseek(BaseModel):
         """
         api_key = api_key or read_cache_secret("funai", "deepseek", "api_key")
         super().__init__(
-            api_key=api_key, model_name=model_name, base_url=base_url, *args, **kwargs
+            *args, api_key=api_key, model_name=model_name, base_url=base_url, **kwargs
         )
 
 

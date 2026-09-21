@@ -109,7 +109,7 @@ def test_deepseek_construction_falls_back_to_funsecret(mock_read_secret):
     """不传 api_key 时，funai 必须向 funsecret 请求一个。"""
     from funai.llm import Deepseek
 
-    model = Deepseek()
+    Deepseek()
 
     mock_read_secret.assert_called_once_with("funai", "deepseek", "api_key")
 
