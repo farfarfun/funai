@@ -62,7 +62,10 @@ class BaseModel(OpenAI):
             **kwargs: 透传给 `chat.completions.create` 的关键字参数。
 
         Returns:
-            模型回复文本（已去除换行符）；请求返回空响应或非预期类型时返回空字符串。
+            模型回复文本（已去除换行符）。以下边界情形一律记录错误日志并返回空
+            字符串，不向调用方抛异常：响应为空、响应类型非 `ChatCompletion`、
+            响应不含候选项（`choices` 为空）、首个候选项的 `message.content`
+            为 `None`。
         """
         response = self.chat.completions.create(
             *args,
@@ -71,23 +74,27 @@ class BaseModel(OpenAI):
             **kwargs,
         )
         content = ""
-        if response:
-            if isinstance(response, ChatCompletion):
-                if response.choices and response.choices[0].message.content is not None:
-                    content = response.choices[0].message.content
-                else:
-                    logger.error(
-                        f"[{self.llm_provider}] returned a response without text content."
-                    )
-            else:
-                logger.error(
-                    f'[{self.llm_provider}] returned an invalid response: "{response}", please check your network '
-                    f"connection and try again."
-                )
-        else:
+        if not response:
             logger.error(
-                f"[{self.llm_provider}] returned an empty response, please check your network connection and try again."
+                f"[{self.llm_provider}] returned an empty response, "
+                f"please check your network connection and try again."
             )
+        elif not isinstance(response, ChatCompletion):
+            logger.error(
+                f"[{self.llm_provider}] returned an unexpected response type "
+                f"{type(response).__name__}, please check your network connection "
+                f"and try again."
+            )
+        elif not response.choices:
+            logger.error(
+                f"[{self.llm_provider}] returned a response without any choices."
+            )
+        elif response.choices[0].message.content is None:
+            logger.error(
+                f"[{self.llm_provider}] returned a response without text content."
+            )
+        else:
+            content = response.choices[0].message.content
         return content.replace("\n", "")
 
 

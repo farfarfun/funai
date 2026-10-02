@@ -1,7 +1,7 @@
 [project]
 name = "funai"
-version = "1.0.11"
-description = "funai"
+version = "1.0.12"
+description = "大模型统一调用封装：基于 OpenAI 兼容接口接入 DeepSeek、Moonshot，API Key 由 funsecret 管理"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -17,3 +17,12 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [ "pytest>=7.0.0", "ruff>=0.12.0",]
+
+[tool.ruff]
+target-version = "py310"
+src = [ "src",]
+
+[tool.ruff.lint]
+select = [ "E", "F", "I", "UP", "B", "SIM", "RUF",]
+# RUF001-003：docstring 与日志文案是中文，全角标点是有意使用的。
+ignore = [ "RUF001", "RUF002", "RUF003",]

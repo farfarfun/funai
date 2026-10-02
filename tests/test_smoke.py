@@ -201,6 +201,63 @@ def test_fun_chat_handles_none_content():
     assert model.fun_chat("prompt") == ""
 
 
+@pytest.mark.parametrize(
+    "response",
+    [
+        {"choices": [{"message": {"content": "hi"}}]},  # 裸 dict，不是 ChatCompletion
+        "unexpected plain text",  # 服务端返回了 HTML/文本错误页
+        object(),  # 任意无关对象
+    ],
+)
+def test_fun_chat_handles_unexpected_response_type(response):
+    """fun_chat() 遇到非 ChatCompletion 的畸形响应时返回空字符串，不抛异常。"""
+    from funai.llm import Moonshot
+
+    model = Moonshot(api_key="sk-fake-key")
+    model.chat.completions.create = MagicMock(return_value=response)
+
+    assert model.fun_chat("prompt") == ""
+
+
+def test_fun_chat_handles_blank_content():
+    """首个候选项的 content 为空字符串时同样返回空字符串。"""
+    from funai.llm import Moonshot
+
+    model = Moonshot(api_key="sk-fake-key")
+    model.chat.completions.create = MagicMock(return_value=_fake_chat_completion(""))
+
+    assert model.fun_chat("prompt") == ""
+
+
+def test_fun_chat_uses_first_choice_when_multiple_returned():
+    """响应含多个候选项时，fun_chat() 取第一个。"""
+    from openai.types.chat import ChatCompletion
+    from openai.types.chat.chat_completion import Choice
+    from openai.types.chat.chat_completion_message import ChatCompletionMessage
+
+    from funai.llm import Moonshot
+
+    choices = [
+        Choice(
+            finish_reason="stop",
+            index=i,
+            message=ChatCompletionMessage(role="assistant", content=f"answer-{i}"),
+        )
+        for i in range(3)
+    ]
+    response = ChatCompletion(
+        id="test-id",
+        choices=choices,
+        created=0,
+        model="test-model",
+        object="chat.completion",
+    )
+    model = Moonshot(api_key="sk-fake-key")
+    model.chat.completions.create = MagicMock(return_value=response)
+
+    assert model.fun_chat("prompt") == "answer-0"
+
+
 def test_get_model_moonshot():
     """get_model("moonshot") 应返回 Moonshot 实例。"""
     with patch("funai.llm.models.read_cache_secret", return_value="sk-fake"):
