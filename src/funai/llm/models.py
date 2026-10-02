@@ -73,7 +73,12 @@ class BaseModel(OpenAI):
         content = ""
         if response:
             if isinstance(response, ChatCompletion):
-                content = response.choices[0].message.content
+                if response.choices and response.choices[0].message.content is not None:
+                    content = response.choices[0].message.content
+                else:
+                    logger.error(
+                        f"[{self.llm_provider}] returned a response without text content."
+                    )
             else:
                 logger.error(
                     f'[{self.llm_provider}] returned an invalid response: "{response}", please check your network '

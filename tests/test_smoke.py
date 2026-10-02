@@ -172,6 +172,35 @@ def test_fun_chat_handles_empty_response():
     assert result == ""
 
 
+def test_fun_chat_handles_empty_choices():
+    """fun_chat() 在响应不含候选项时不应抛异常，返回空字符串。"""
+    from openai.types.chat import ChatCompletion
+
+    from funai.llm import Moonshot
+
+    response = ChatCompletion(
+        id="test-id",
+        choices=[],
+        created=0,
+        model="test-model",
+        object="chat.completion",
+    )
+    model = Moonshot(api_key="sk-fake-key")
+    model.chat.completions.create = MagicMock(return_value=response)
+
+    assert model.fun_chat("prompt") == ""
+
+
+def test_fun_chat_handles_none_content():
+    """fun_chat() 在消息内容为 None 时不应抛异常，返回空字符串。"""
+    from funai.llm import Moonshot
+
+    model = Moonshot(api_key="sk-fake-key")
+    model.chat.completions.create = MagicMock(return_value=_fake_chat_completion(None))
+
+    assert model.fun_chat("prompt") == ""
+
+
 def test_get_model_moonshot():
     """get_model("moonshot") 应返回 Moonshot 实例。"""
     with patch("funai.llm.models.read_cache_secret", return_value="sk-fake"):
