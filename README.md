@@ -4,6 +4,8 @@
 
 ## 安装
 
+需要 Python 3.10 或更高版本。
+
 ```bash
 pip install funai
 ```
